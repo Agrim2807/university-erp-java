@@ -1,0 +1,16 @@
+# Maven
+target/
+
+# Database backups
+backups/
+*.sql
+
+# Environment
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

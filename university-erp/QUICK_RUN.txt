@@ -1,0 +1,121 @@
+===============================================================================
+UNIVERSITY ERP - QUICK RUN GUIDE
+===============================================================================
+
+PREREQUISITES
+-------------
+- Java 21 (JDK)
+- Maven 3.6+
+- MySQL 8.0+
+
+===============================================================================
+STEP 1: START MYSQL
+===============================================================================
+sudo service mysql start
+# OR on macOS: brew services start mysql
+# OR on Windows: net start MySQL80
+
+===============================================================================
+STEP 2: SETUP DATABASES (Run in Order!)
+===============================================================================
+# Navigate to project directory
+cd /path/to/university-erp
+
+# Setup Auth Database FIRST (creates user, both databases, and tables)
+mysql -u root -p < sql_files/auth_setup.sql
+
+# Setup ERP Database SECOND (creates tables and sample data)
+mysql -u root -p < sql_files/erp_setup.sql
+
+# When prompted, enter your MySQL root password
+
+===============================================================================
+STEP 3: CONFIGURE DATABASE CONNECTION
+===============================================================================
+# Edit the following file with YOUR MySQL credentials:
+# src/main/java/edu/univ/erp/util/DatabaseConfig.java
+
+# Change lines 27-28 and 44-45:
+# authConfig.setUsername("root");
+# authConfig.setPassword("YOUR_MYSQL_PASSWORD");
+# erpConfig.setUsername("root");
+# erpConfig.setPassword("YOUR_MYSQL_PASSWORD");
+
+===============================================================================
+STEP 4: BUILD PROJECT
+===============================================================================
+mvn clean compile
+
+===============================================================================
+STEP 5: RUN TESTS (Optional)
+===============================================================================
+mvn test
+# Expected: Tests run: 35, Failures: 0, Errors: 0, Skipped: 0
+
+===============================================================================
+STEP 6: RUN APPLICATION
+===============================================================================
+# Option A: Using Maven
+mvn exec:java -Dexec.mainClass="edu.univ.erp.Main"
+
+# Option B: Using JAR (after packaging)
+mvn clean package
+java -jar target/university-erp-1.0.0.jar
+
+===============================================================================
+DEFAULT LOGIN CREDENTIALS
+===============================================================================
+Role        | Username  | Password
+------------|-----------|----------
+Admin       | admin1    | admin123
+Instructor  | inst1     | admin123
+Student 1   | stu1      | admin123
+Student 2   | stu2      | admin123
+
+===============================================================================
+TROUBLESHOOTING
+===============================================================================
+
+Problem: Connection refused to MySQL
+Solution: sudo service mysql status
+          sudo service mysql start
+
+Problem: Access denied for user 'root'@'localhost'
+Solution: Check your MySQL root password in DatabaseConfig.java
+
+Problem: Database does not exist
+Solution: Re-run the SQL setup scripts in order (auth_setup.sql first!)
+
+Problem: Tests failing
+Solution: Tests are unit tests and don't require database.
+          Check Java version: java -version (should be 21+)
+
+===============================================================================
+VERIFY INSTALLATION
+===============================================================================
+# Check databases exist
+mysql -u root -p -e "SHOW DATABASES LIKE 'university_%';"
+
+# Should show:
+# university_auth
+# university_erp
+
+# Check sample users
+mysql -u root -p university_auth -e "SELECT username, role FROM users_auth;"
+
+# Should show: admin1, inst1, stu1, stu2
+
+===============================================================================
+QUICK COMMANDS SUMMARY
+===============================================================================
+# Complete setup from scratch:
+mysql -u root -p < sql_files/auth_setup.sql
+mysql -u root -p < sql_files/erp_setup.sql
+# Edit DatabaseConfig.java with your password
+mvn clean compile
+mvn test
+mvn exec:java -Dexec.mainClass="edu.univ.erp.Main"
+
+===============================================================================
+END OF QUICK RUN GUIDE
+===============================================================================

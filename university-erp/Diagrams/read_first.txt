@@ -1,0 +1,9 @@
+I created all the project diagrams in DIAGRAMS.md because Miro prompted me to upgrade for higher quality, so the quality there is low. Still, I’ve provided both the photo and PDF versions of the diagrams (although the quality is poor due to the free tier).
+
+Please view the diagrams in DIAGRAMS.md.
+For a high-quality Miro view, I will show you in an offline demo by logging into Miro using my email ID (Saksham Verma).
+
+1. DIAGRAMS.md
+2. Diagrams_Image.png
+3. Diagrams_PDF.pdf
+4. Working_Diagram.png
